@@ -33,21 +33,24 @@ public class MqttProviderConfig {
      */
     private MqttClient client;
 
+    private MqttAsyncClient mqttAsyncClient;
+
     /**
      * 在bean初始化后连接到服务器
      */
     @PostConstruct
     public void init() {
-        connect();
+//        connect();
     }
 
     /**
      * 客户端连接服务端
      */
-    public void connect() {
+    public MqttClient connect() {
         try {
             // 创建MQTT客户端对象
             client = new MqttClient(hostUrl, clientId, new MemoryPersistence());
+//            mqttAsyncClient = new MqttAsyncClient(hostUrl, clientId, new MemoryPersistence());
             // 连接设置
             MqttConnectOptions options = new MqttConnectOptions();
             // 是否清空session，设置false表示服务器会保留客户端的连接记录（订阅主题，qos）,客户端重连之后能获取到服务器在客户端断开连接期间推送的消息
@@ -66,10 +69,14 @@ public class MqttProviderConfig {
             // 设置回调
             client.setCallback(new MqttProviderCallBack());
             client.connect(options);
+
+//            mqttAsyncClient.setCallback(new MqttProviderCallBack());
+//            mqttAsyncClient.connect(options);
+            log.info("MqttClient connect successfully.");
         } catch (MqttException e) {
             e.printStackTrace();
         }
-
+        return client;
     }
 
     public void publish(int qos, boolean retained, String topic, String message) {

@@ -18,7 +18,7 @@ public class MqttProviderCallBack implements MqttCallback {
      */
     @Override
     public void connectionLost(Throwable cause) {
-        System.out.println(clientId + "与服务器断开连接");
+        System.out.println(clientId + "--------与服务器断开连接");
     }
 
     /**
@@ -37,7 +37,6 @@ public class MqttProviderCallBack implements MqttCallback {
     public void deliveryComplete(IMqttDeliveryToken token) {
         IMqttAsyncClient client = token.getClient();
         System.out.println(client.getClientId() + "发布消息成功！");
-
     }
 
 }
